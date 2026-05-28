@@ -20,7 +20,6 @@ import {
   CalendarClock,
   BookOpen,
   Zap,
-  Heart,
 } from "lucide-react";
 
 // Import shadcn/ui components
@@ -1013,9 +1012,6 @@ const CourseDetails = () => {
                       : course.isFree
                         ? "Enroll Now"
                         : "Purchase Course"}
-                  </Button>
-                  <Button variant="outline" size="lg" className="mt-3 w-full">
-                    <Heart className="h-4 w-4" /> Save for later
                   </Button>
                   <p className="text-center text-[10px] text-muted-foreground mt-4 px-4 leading-tight">
                     By enrolling, you agree to our Terms of Service and Privacy Policy.

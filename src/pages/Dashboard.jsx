@@ -227,7 +227,7 @@ const Dashboard = () => {
             </div>
           </div>
           <div className="stat__val">4</div>
-          <div className="stat__label">Certificates earned</div>
+          <div className="stat__label">Exams completed</div>
         </div>
       </div>
 

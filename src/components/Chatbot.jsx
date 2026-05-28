@@ -6,6 +6,30 @@ import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import chatbotService from "@/api/chatbot";
 
+const normalizeChatPayload = (payload) => {
+  if (typeof payload === "string") {
+    try {
+      return normalizeChatPayload(JSON.parse(payload));
+    } catch {
+      return payload;
+    }
+  }
+
+  if (!payload || typeof payload !== "object" || Array.isArray(payload)) {
+    return payload;
+  }
+
+  if (payload.data !== undefined && payload.data !== null) {
+    const { data: nestedData, ...rest } = payload;
+    return normalizeChatPayload({
+      ...rest,
+      ...nestedData,
+    });
+  }
+
+  return payload;
+};
+
 const Chatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
@@ -32,7 +56,8 @@ const Chatbot = () => {
 
     try {
       // 1. Try to parse the content if it's a string
-      let parsedData = typeof content === "string" ? JSON.parse(content) : content;
+      let parsedData =
+        typeof content === "string" ? JSON.parse(content) : content;
 
       // 2. If it's still a string after parsing (double encoded), try again
       if (typeof parsedData === "string") {
@@ -92,7 +117,8 @@ const Chatbot = () => {
                   </div>
 
                   <p className="text-[11px] text-slate-600 mt-1 leading-normal italic">
-                    "{rec.reason || rec.Reason || "Highly recommended for you."}"
+                    "{rec.reason || rec.Reason || "Highly recommended for you."}
+                    "
                   </p>
 
                   <div className="flex justify-between items-center mt-2 pt-1.5 border-t border-slate-100 text-[10px] text-slate-400">
@@ -115,11 +141,19 @@ const Chatbot = () => {
 
       // 6. Render simple response
       if (parsedData && parsedData.response) {
-        return <p className="whitespace-pre-wrap leading-relaxed">{parsedData.response}</p>;
+        return (
+          <p className="whitespace-pre-wrap leading-relaxed">
+            {parsedData.response}
+          </p>
+        );
       }
-      
+
       if (parsedData && parsedData.answer) {
-        return <p className="whitespace-pre-wrap leading-relaxed">{parsedData.answer}</p>;
+        return (
+          <p className="whitespace-pre-wrap leading-relaxed">
+            {parsedData.answer}
+          </p>
+        );
       }
     } catch (e) {
       // Fallback to raw content
@@ -127,7 +161,9 @@ const Chatbot = () => {
 
     return (
       <p className="whitespace-pre-wrap leading-relaxed">
-        {typeof content === "object" ? JSON.stringify(content, null, 2) : content}
+        {typeof content === "object"
+          ? JSON.stringify(content, null, 2)
+          : content}
       </p>
     );
   };
@@ -143,18 +179,27 @@ const Chatbot = () => {
 
     try {
       const data = await chatbotService.ask(currentInput);
-      const botReply = data.recommendations
-        ? data
-        : data.response || data.answer || data;
+      const normalizedResponse = normalizeChatPayload(data);
+      const botReply = normalizedResponse?.recommendations
+        ? normalizedResponse
+        : normalizedResponse?.response ||
+          normalizedResponse?.answer ||
+          normalizedResponse;
 
       setMessages((prev) => [...prev, { role: "bot", content: botReply }]);
     } catch (error) {
+      const errorMessage =
+        typeof error?.response?.data === "string"
+          ? error.response.data
+          : error?.response?.data?.message ||
+            error?.response?.data?.error ||
+            "Sorry, I'm having trouble thinking right now. Try again later!";
+
       setMessages((prev) => [
         ...prev,
         {
           role: "bot",
-          content:
-            "Sorry, I'm having trouble thinking right now. Try again later!",
+          content: errorMessage,
         },
       ]);
     } finally {

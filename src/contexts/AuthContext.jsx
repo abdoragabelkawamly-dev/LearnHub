@@ -3,6 +3,52 @@ import api from "../api/axios";
 
 const AuthContext = createContext({});
 
+const normalizePayload = (payload) => {
+  if (!payload || typeof payload !== "object" || Array.isArray(payload)) {
+    return payload;
+  }
+
+  if (payload.data !== undefined && payload.data !== null) {
+    const { data: nestedData, ...rest } = payload;
+    const flattenedPayload = {
+      ...rest,
+      ...nestedData,
+    };
+
+    return normalizePayload(flattenedPayload);
+  }
+
+  return payload;
+};
+
+const getErrorMessage = (error) => {
+  const responseData = error?.response?.data;
+
+  if (typeof responseData === "string") {
+    return responseData;
+  }
+
+  if (responseData && typeof responseData === "object") {
+    // Handle array-based errors like {"InvalidLogin": ["..."]}
+    for (const key in responseData) {
+      if (Array.isArray(responseData[key]) && responseData[key].length > 0) {
+        return responseData[key][0];
+      }
+    }
+
+    return (
+      responseData.message ||
+      responseData.error ||
+      responseData.title ||
+      responseData.data?.message ||
+      responseData.data?.error ||
+      "Request failed"
+    );
+  }
+
+  return error?.message || "Request failed";
+};
+
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -31,15 +77,35 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password, rememberMe = true) => {
     const response = await api.post("/api/Account/Login", { email, password });
-    const { accessToken, refreshToken } = response.data;
+    const data = response.data;
+    const normalizedResponse = normalizePayload(data);
+    
+    const accessToken =
+      normalizedResponse.accessToken || 
+      normalizedResponse.token || 
+      normalizedResponse.Token || 
+      normalizedResponse.AccessToken;
+      
+    const refreshToken = 
+      normalizedResponse.refreshToken || 
+      normalizedResponse.RefreshToken;
+
+    if (!accessToken) {
+      throw new Error(
+        getErrorMessage({ response: { data: data } }) ||
+          "Login failed",
+      );
+    }
 
     const storage = rememberMe ? localStorage : sessionStorage;
     storage.setItem("token", accessToken);
-    storage.setItem("refreshToken", refreshToken);
+    if (refreshToken) {
+      storage.setItem("refreshToken", refreshToken);
+    }
 
     try {
       const profileResponse = await api.get("/api/Account/Account/GetProfile");
-      const userData = profileResponse.data.data;
+      const userData = normalizePayload(profileResponse.data);
 
       const rawRole =
         userData.roles && userData.roles.length > 0
@@ -65,7 +131,7 @@ export const AuthProvider = ({ children }) => {
   const refreshUser = async () => {
     try {
       const profileResponse = await api.get("/api/Account/Account/GetProfile");
-      const userData = profileResponse.data.data;
+      const userData = normalizePayload(profileResponse.data);
 
       const rawRole =
         userData.roles && userData.roles.length > 0

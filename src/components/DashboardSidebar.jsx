@@ -26,7 +26,6 @@ import {
   ReceiptText,
   SlidersHorizontal,
   Tags,
-  Trophy,
   UserCheck,
   UserCircle,
   UserRoundCog,
@@ -96,7 +95,6 @@ const DashboardSidebar = () => {
       icon: BrainCircuit,
     },
     { title: "Grades", url: "/dashboard/grades", icon: ChartNoAxesCombined },
-    { title: "Certificates", url: "/dashboard/certificates", icon: Trophy },
     { title: "My Orders", url: "/dashboard/my-orders", icon: ReceiptText },
   ];
 

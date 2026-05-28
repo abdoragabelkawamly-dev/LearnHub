@@ -40,7 +40,6 @@ import AdminPayments from "./pages/admin/AdminPayments";
 import AdminExams from "./pages/admin/AdminExams";
 import AdminStudentResults from "./pages/admin/AdminStudentResults";
 import MyOrders from "./pages/MyOrders";
-import Certificates from "./pages/Certificates";
 import Settings from "./pages/Settings";
 import StudentManagement from "./pages/instructor/StudentManagement";
 import InstructorSubmissions from "./pages/instructor/InstructorSubmissions";
@@ -142,7 +141,6 @@ const App = () => (
 
                 <Route path="exam-result/:id" element={<ExamFeedback />} />
                 <Route path="my-orders" element={<MyOrders />} />
-                <Route path="certificates" element={<Certificates />} />
 
                 <Route element={<ProtectedRoute allowedRoles={["Instructor", "Admin"]} />}>
                   <Route path="create-course" element={<CreateCourse />} />

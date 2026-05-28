@@ -33,15 +33,15 @@ const FALLBACK_CATEGORIES = [
 ];
 
 const FALLBACK_COURSES = [
-  { courseId: 1, title: "React from Zero to Hero", categoryName: "Web Development", level: "Intermediate", price: 49, rating: 4.9, averageRating: 4.9, enrolledCount: 412, instructorName: "Mohamed Kamal", gradient: "linear-gradient(135deg, #99e4dd 0%, #14b8a6 100%)", hot: true },
-  { courseId: 2, title: "Machine Learning Fundamentals", categoryName: "AI & Data", level: "Beginner", price: 79, rating: 4.8, averageRating: 4.8, enrolledCount: 218, instructorName: "Dr. Lina Khaled", gradient: "linear-gradient(135deg, #fde68a 0%, #f59e0b 100%)" },
-  { courseId: 3, title: "Python for Absolute Beginners", categoryName: "Programming", level: "Beginner", price: 39, rating: 4.7, averageRating: 4.7, enrolledCount: 521, instructorName: "Ahmed Ismail", gradient: "linear-gradient(135deg, #ccf2ee 0%, #0f766e 100%)" },
-  { courseId: 4, title: "UI/UX Design Foundations", categoryName: "Design", level: "All Levels", price: 59, rating: 4.6, averageRating: 4.6, enrolledCount: 184, instructorName: "Nour Rashad", gradient: "linear-gradient(135deg, #e9d5ff 0%, #8b5cf6 100%)", hot: true },
-  { courseId: 5, title: "Cloud Computing with AWS", categoryName: "DevOps", level: "Intermediate", price: 89, rating: 4.8, averageRating: 4.8, enrolledCount: 156, instructorName: "Yara Magdy", gradient: "linear-gradient(135deg, #99e4dd 0%, #115e58 100%)" },
-  { courseId: 6, title: "Build a SaaS with Next.js", categoryName: "Web Development", level: "Advanced", price: 99, rating: 4.9, averageRating: 4.9, enrolledCount: 263, instructorName: "Sara Ahmed", gradient: "linear-gradient(135deg, #ccf2ee 0%, #5fd1c7 100%)", hot: true },
-  { courseId: 7, title: "Advanced TypeScript Patterns", categoryName: "Web Development", level: "Advanced", price: 69, rating: 4.8, averageRating: 4.8, enrolledCount: 187, instructorName: "Karim Hassan", gradient: "linear-gradient(135deg, #93c5fd 0%, #3b82f6 100%)" },
-  { courseId: 8, title: "Deep Learning with PyTorch", categoryName: "AI & Data", level: "Advanced", price: 119, rating: 4.9, averageRating: 4.9, enrolledCount: 94, instructorName: "Dr. Omar Tarek", gradient: "linear-gradient(135deg, #c4b5fd 0%, #6d28d9 100%)", hot: true },
-  { courseId: 9, title: "Figma for Developers", categoryName: "Design", level: "Beginner", price: 0, isFree: true, rating: 4.7, averageRating: 4.7, enrolledCount: 312, instructorName: "Nour Rashad", gradient: "linear-gradient(135deg, #fdba74 0%, #ea580c 100%)" },
+  { courseId: 1, title: "React from Zero to Hero", categoryName: "Web Development", price: 49, rating: 4.9, averageRating: 4.9, enrolledCount: 412, instructorName: "Mohamed Kamal", gradient: "linear-gradient(135deg, #99e4dd 0%, #14b8a6 100%)", hot: true },
+  { courseId: 2, title: "Machine Learning Fundamentals", categoryName: "AI & Data", price: 79, rating: 4.8, averageRating: 4.8, enrolledCount: 218, instructorName: "Dr. Lina Khaled", gradient: "linear-gradient(135deg, #fde68a 0%, #f59e0b 100%)" },
+  { courseId: 3, title: "Python for Absolute Beginners", categoryName: "Programming", price: 39, rating: 4.7, averageRating: 4.7, enrolledCount: 521, instructorName: "Ahmed Ismail", gradient: "linear-gradient(135deg, #ccf2ee 0%, #0f766e 100%)" },
+  { courseId: 4, title: "UI/UX Design Foundations", categoryName: "Design", price: 59, rating: 4.6, averageRating: 4.6, enrolledCount: 184, instructorName: "Nour Rashad", gradient: "linear-gradient(135deg, #e9d5ff 0%, #8b5cf6 100%)", hot: true },
+  { courseId: 5, title: "Cloud Computing with AWS", categoryName: "DevOps", price: 89, rating: 4.8, averageRating: 4.8, enrolledCount: 156, instructorName: "Yara Magdy", gradient: "linear-gradient(135deg, #99e4dd 0%, #115e58 100%)" },
+  { courseId: 6, title: "Build a SaaS with Next.js", categoryName: "Web Development", price: 99, rating: 4.9, averageRating: 4.9, enrolledCount: 263, instructorName: "Sara Ahmed", gradient: "linear-gradient(135deg, #ccf2ee 0%, #5fd1c7 100%)", hot: true },
+  { courseId: 7, title: "Advanced TypeScript Patterns", categoryName: "Web Development", price: 69, rating: 4.8, averageRating: 4.8, enrolledCount: 187, instructorName: "Karim Hassan", gradient: "linear-gradient(135deg, #93c5fd 0%, #3b82f6 100%)" },
+  { courseId: 8, title: "Deep Learning with PyTorch", categoryName: "AI & Data", price: 119, rating: 4.9, averageRating: 4.9, enrolledCount: 94, instructorName: "Dr. Omar Tarek", gradient: "linear-gradient(135deg, #c4b5fd 0%, #6d28d9 100%)", hot: true },
+  { courseId: 9, title: "Figma for Developers", categoryName: "Design", price: 0, isFree: true, rating: 4.7, averageRating: 4.7, enrolledCount: 312, instructorName: "Nour Rashad", gradient: "linear-gradient(135deg, #fdba74 0%, #ea580c 100%)" },
 ];
 
 function useDebounce(value, delay) {
@@ -208,7 +208,6 @@ const BrowseCourses = () => {
   const { user } = useAuth();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategoryId, setSelectedCategoryId] = useState(null);
-  const [selectedLevels, setSelectedLevels] = useState([]);
   const [selectedPrice, setSelectedPrice] = useState("all");
   const [minimumRating, setMinimumRating] = useState(null);
   const [sortBy, setSortBy] = useState("newest");
@@ -285,7 +284,6 @@ const BrowseCourses = () => {
   const visibleCourses = courses.filter((course) => {
     const price = Number(course.price || 0);
     const isFree = course.isFree || price === 0;
-    const courseLevel = course.level || course.difficulty || "All Levels";
     const rating = Number(course.averageRating || course.rating || 4);
     const search = debouncedSearchTerm.trim().toLowerCase();
 
@@ -296,7 +294,6 @@ const BrowseCourses = () => {
         .includes(search)
     ) return false;
     if (selectedCategory && course.categoryName !== selectedCategory.categoryName) return false;
-    if (selectedLevels.length && !selectedLevels.includes(courseLevel)) return false;
     if (selectedPrice === "free" && !isFree) return false;
     if (selectedPrice === "under-50" && price >= 50) return false;
     if (selectedPrice === "paid" && isFree) return false;
@@ -306,19 +303,11 @@ const BrowseCourses = () => {
 
   const clearFilters = () => {
     setSelectedCategoryId(null);
-    setSelectedLevels([]);
     setSelectedPrice("all");
     setMinimumRating(null);
   };
 
   const clearCategory = () => setSelectedCategoryId(null);
-  const toggleLevel = (level) => {
-    setSelectedLevels((current) =>
-      current.includes(level)
-        ? current.filter((item) => item !== level)
-        : [...current, level],
-    );
-  };
 
   function renderAction(course) {
     const isCourseFree = course.isFree || course.price === 0;
@@ -401,7 +390,7 @@ const BrowseCourses = () => {
             <h3 style={{ fontSize: 14, fontWeight: 700, margin: 0 }}>
               Filters
             </h3>
-            {(selectedCategoryId || selectedLevels.length > 0 || selectedPrice !== "all" || minimumRating) && (
+            {(selectedCategoryId || selectedPrice !== "all" || minimumRating) && (
               <Button
                 type="button"
                 variant="link"
@@ -465,22 +454,6 @@ const BrowseCourses = () => {
                     }
                   />
                   <span>{cat.categoryName}</span>
-                </label>
-              ))}
-            </div>
-          </div>
-
-          <div className="filters__group">
-            <div className="filters__label">Level</div>
-            <div className="col">
-              {["Beginner", "Intermediate", "Advanced", "All Levels"].map((level) => (
-                <label key={level} className="filter-opt">
-                  <input
-                    type="checkbox"
-                    checked={selectedLevels.includes(level)}
-                    onChange={() => toggleLevel(level)}
-                  />
-                  <span>{level}</span>
                 </label>
               ))}
             </div>
@@ -556,7 +529,7 @@ const BrowseCourses = () => {
         {/* Main content */}
         <div className="col">
           {/* Active filter chips */}
-          {(selectedCategory || selectedLevels.length > 0 || selectedPrice !== "all" || minimumRating) && (
+          {(selectedCategory || selectedPrice !== "all" || minimumRating) && (
             <div className="active-filters">
               {selectedCategory && (
                 <span className="filter-chip">
@@ -566,14 +539,6 @@ const BrowseCourses = () => {
                   </Button>
                 </span>
               )}
-              {selectedLevels.map((level) => (
-                <span key={level} className="filter-chip">
-                  {level}
-                  <Button type="button" variant="ghost" size="icon" onClick={() => toggleLevel(level)} aria-label={`Remove ${level}`}>
-                    <X size={12} />
-                  </Button>
-                </span>
-              ))}
               {selectedPrice !== "all" && (
                 <span className="filter-chip">
                   {selectedPrice === "under-50" ? "Under $50" : selectedPrice}

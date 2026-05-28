@@ -38,10 +38,19 @@ const Login = () => {
         navigate("/dashboard");
       }
     } catch (error) {
+      const errorMessage =
+        typeof error?.response?.data === "string"
+          ? error.response.data
+          : error.response?.data?.message ||
+            error.response?.data?.error ||
+            error.response?.data?.data?.message ||
+            error.response?.data?.data?.error ||
+            "Invalid credentials";
+
       toast({
         variant: "destructive",
         title: "Login failed",
-        description: error.response?.data?.message || "Invalid credentials",
+        description: errorMessage,
       });
     } finally {
       setIsLoading(false);

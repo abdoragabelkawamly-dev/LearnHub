@@ -140,7 +140,7 @@ function Hero({ isAuthenticated }) {
             </h1>
             <p className="lead max-w-[520px]">
               Learn from world-class instructors with hands-on projects,
-              AI-guided feedback, and certificates that recruiters actually care about.
+              AI-guided feedback, and skills that recruiters actually care about.
             </p>
             <div className="flex gap-3 mt-2 flex-wrap">
               <Button asChild variant="gradient" size="xl" className="shadow-lg">
@@ -230,19 +230,6 @@ function Hero({ isAuthenticated }) {
               </CardContent>
             </Card>
 
-            {/* Certificate */}
-            <Card className="float bottom-[30px] right-0 p-5 w-[250px] animate-[floaty_7s_ease-in-out_infinite] delay-1000 border-border/80 shadow-xl">
-              <CardContent className="p-0 flex items-center gap-3">
-                <div className="w-11 h-11 rounded-xl bg-accent/15 text-accent flex items-center justify-center">
-                  <Trophy className="w-5 h-5" />
-                </div>
-                <div>
-                  <div className="font-bold text-sm">Certificate Earned</div>
-                  <div className="text-[12px] text-muted-foreground">JavaScript Fundamentals</div>
-                </div>
-              </CardContent>
-            </Card>
-
             {/* Live learners */}
             <Card className="float bottom-[80px] left-0 p-4 w-[210px] animate-[floatyB_8s_ease-in-out_infinite] delay-500 border-border/80 shadow-xl">
               <CardContent className="p-0">
@@ -324,12 +311,12 @@ const CATS = [
 ];
 
 const FALLBACK_COURSES = [
-  { courseId: 1, title: "React from Zero to Hero", categoryName: "Web Development", level: "Intermediate", price: 49, rating: 4.9, reviews: 412, instructorName: "Mohamed Kamal", lessons: 64, gradient: "linear-gradient(135deg, #99e4dd 0%, #14b8a6 100%)", Icon: Code, hot: true },
-  { courseId: 2, title: "Machine Learning Fundamentals", categoryName: "AI & Data", level: "Beginner", price: 79, rating: 4.8, reviews: 218, instructorName: "Dr. Lina Khaled", lessons: 92, gradient: "linear-gradient(135deg, #fde68a 0%, #f59e0b 100%)", Icon: Brain },
-  { courseId: 3, title: "Python for Absolute Beginners", categoryName: "Programming", level: "Beginner", price: 39, rating: 4.7, reviews: 521, instructorName: "Ahmed Ismail", lessons: 48, gradient: "linear-gradient(135deg, #ccf2ee 0%, #0f766e 100%)", Icon: BookOpen },
-  { courseId: 4, title: "UI/UX Design Foundations", categoryName: "Design", level: "All Levels", price: 59, rating: 4.6, reviews: 184, instructorName: "Nour Rashad", lessons: 52, gradient: "linear-gradient(135deg, #e9d5ff 0%, #8b5cf6 100%)", Icon: Palette, hot: true },
-  { courseId: 5, title: "Cloud Computing with AWS", categoryName: "DevOps", level: "Intermediate", price: 89, rating: 4.8, reviews: 156, instructorName: "Yara Magdy", lessons: 78, gradient: "linear-gradient(135deg, #99e4dd 0%, #115e58 100%)", Icon: Layers },
-  { courseId: 6, title: "Build a SaaS with Next.js", categoryName: "Web Development", level: "Advanced", price: 99, rating: 4.9, reviews: 263, instructorName: "Sara Ahmed", lessons: 104, gradient: "linear-gradient(135deg, #ccf2ee 0%, #5fd1c7 100%)", Icon: Zap, hot: true },
+  { courseId: 1, title: "React from Zero to Hero", categoryName: "Web Development", price: 49, rating: 4.9, reviews: 412, instructorName: "Mohamed Kamal", lessons: 64, gradient: "linear-gradient(135deg, #99e4dd 0%, #14b8a6 100%)", Icon: Code, hot: true },
+  { courseId: 2, title: "Machine Learning Fundamentals", categoryName: "AI & Data", price: 79, rating: 4.8, reviews: 218, instructorName: "Dr. Lina Khaled", lessons: 92, gradient: "linear-gradient(135deg, #fde68a 0%, #f59e0b 100%)", Icon: Brain },
+  { courseId: 3, title: "Python for Absolute Beginners", categoryName: "Programming", price: 39, rating: 4.7, reviews: 521, instructorName: "Ahmed Ismail", lessons: 48, gradient: "linear-gradient(135deg, #ccf2ee 0%, #0f766e 100%)", Icon: BookOpen },
+  { courseId: 4, title: "UI/UX Design Foundations", categoryName: "Design", price: 59, rating: 4.6, reviews: 184, instructorName: "Nour Rashad", lessons: 52, gradient: "linear-gradient(135deg, #e9d5ff 0%, #8b5cf6 100%)", Icon: Palette, hot: true },
+  { courseId: 5, title: "Cloud Computing with AWS", categoryName: "DevOps", price: 89, rating: 4.8, reviews: 156, instructorName: "Yara Magdy", lessons: 78, gradient: "linear-gradient(135deg, #99e4dd 0%, #115e58 100%)", Icon: Layers },
+  { courseId: 6, title: "Build a SaaS with Next.js", categoryName: "Web Development", price: 99, rating: 4.9, reviews: 263, instructorName: "Sara Ahmed", lessons: 104, gradient: "linear-gradient(135deg, #ccf2ee 0%, #5fd1c7 100%)", Icon: Zap, hot: true },
 ];
 
 function Categories() {
@@ -373,9 +360,9 @@ function Categories() {
 /* ===================== HOW IT WORKS ===================== */
 function HowItWorks() {
   const steps = [
-    { n: "01", title: "Choose your path", desc: "Browse 500+ courses across 8 categories. Filter by level, skill, or career goal — and start your first lesson in seconds." },
+    { n: "01", title: "Choose your path", desc: "Browse 500+ courses across 8 categories. Filter by skill or career goal — and start your first lesson in seconds." },
     { n: "02", title: "Learn by doing", desc: "Every course pairs videos with hands-on coding labs, quizzes, and real-world projects. Get instant feedback from our AI tutor." },
-    { n: "03", title: "Earn your certificate", desc: "Pass the final exam to earn a verified certificate. Add it to LinkedIn — recruiters from 800+ companies hire LearnHub grads." },
+    { n: "03", title: "Showcase your skills", desc: "Complete real-world projects and build a portfolio that stands out. Join our leaderboard and get noticed by top hiring partners." },
   ];
   return (
     <section className="section">
@@ -474,7 +461,7 @@ function FeaturedCourses({ courses, isLoading }) {
                     </div>
                     <CardContent className="p-5">
                       <div className="overline text-primary">
-                        {(course.level || "All Levels").toUpperCase()} · {course.lessons || 0} LESSONS
+                        {course.lessons || 0} LESSONS
                       </div>
                       <h3 className="text-base font-bold mt-2 mb-1 leading-tight text-foreground font-outfit">{course.title}</h3>
                       <p className="text-[13px] text-muted-foreground leading-relaxed mb-3 line-clamp-2">
@@ -722,7 +709,7 @@ function Pricing({ isAuthenticated }) {
     {
       name: "Pro", price: 19, period: "per month",
       desc: "Everything a serious learner needs to ship.",
-      features: ["Unlimited courses, all categories", "Unlimited AI tutor", "Verified certificates", "Hands-on project reviews", "Priority instructor Q&A"],
+      features: ["Unlimited courses, all categories", "Unlimited AI tutor", "Hands-on project reviews", "Priority instructor Q&A"],
       cta: "Start Free Trial", variant: "gradient", featured: true, tag: "MOST POPULAR",
     },
     {
@@ -784,8 +771,7 @@ function FAQ() {
   const items = [
     { q: "Do I need any prior experience to get started?", a: "Not at all. We have beginner-friendly tracks across every category. Each course tells you exactly what you need to know going in — and most start from absolute zero." },
     { q: "How long does it take to complete a course?", a: "Most courses take 10–25 hours of focused work. You can binge a course in a weekend or stretch it over a month — your progress saves automatically wherever you stop." },
-    { q: "Are the certificates accredited?", a: "Our certificates are verified by LearnHub, not accredited by a university. That said, they're recognized by 800+ hiring partners, and our grads have a 95% interview-callback rate." },
-    { q: "What happens if I cancel my subscription?", a: "You keep access to any free content, your earned certificates, and your account. You can re-subscribe anytime and pick up where you left off." },
+    { q: "What happens if I cancel my subscription?", a: "You keep access to any free content and your account. You can re-subscribe anytime and pick up where you left off." },
     { q: "Is there a student discount?", a: "Yes — 50% off Pro for verified university students. Sign up with your .edu email or upload your student ID to claim it." },
   ];
   
@@ -880,7 +866,7 @@ function Footer() {
             ))}
           </div>
         </div>
-        {col("Learn", ["Browse Courses", "Categories", "Career Paths", "Certificates", "For Teams"])}
+        {col("Learn", ["Browse Courses", "Categories", "Career Paths", "For Teams"])}
         {col("Company", ["About", "Instructors", "Careers", "Press", "Blog"])}
         {col("Support", ["Help Center", "Contact", "System Status", "Accessibility"])}
         {col("Legal", ["Privacy", "Terms", "Cookies", "GDPR"])}

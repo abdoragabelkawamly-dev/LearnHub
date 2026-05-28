@@ -90,7 +90,7 @@
   height: 44px;
   padding: 0 1rem;
   border: 2px solid hsl(var(--primary));
-  border-radius: 0.35rem;
+  border-radius: 1rem;
   background: hsl(174 72% 96%);
   color: #353538;
   font-size: 1rem;
@@ -149,7 +149,7 @@ button#login {
   width: 100%;
   height: 46px;
   border: none;
-  border-radius: 0.35rem;
+  border-radius: 1rem;
   background: linear-gradient(
     135deg,
     hsl(var(--primary)) 0%,

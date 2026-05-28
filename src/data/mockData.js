@@ -11,7 +11,6 @@ export const mockCourses = [
     thumbnail:
       "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800&auto=format&fit=crop",
     category: "Development",
-    level: "Beginner",
     duration: "8 weeks",
     enrolledCount: 1234,
     rating: 4.8,
@@ -30,7 +29,6 @@ export const mockCourses = [
     thumbnail:
       "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&auto=format&fit=crop",
     category: "Data Science",
-    level: "Intermediate",
     duration: "12 weeks",
     enrolledCount: 856,
     rating: 4.9,
@@ -49,7 +47,6 @@ export const mockCourses = [
     thumbnail:
       "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&auto=format&fit=crop",
     category: "Design",
-    level: "Beginner",
     duration: "6 weeks",
     enrolledCount: 2341,
     rating: 4.7,
@@ -68,7 +65,6 @@ export const mockCourses = [
     thumbnail:
       "https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=800&auto=format&fit=crop",
     category: "AI & ML",
-    level: "Advanced",
     duration: "16 weeks",
     enrolledCount: 567,
     rating: 4.9,
@@ -87,7 +83,6 @@ export const mockCourses = [
     thumbnail:
       "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&auto=format&fit=crop",
     category: "Business",
-    level: "Beginner",
     duration: "4 weeks",
     enrolledCount: 3456,
     rating: 4.6,
@@ -106,7 +101,6 @@ export const mockCourses = [
     thumbnail:
       "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=800&auto=format&fit=crop",
     category: "Development",
-    level: "Intermediate",
     duration: "10 weeks",
     enrolledCount: 789,
     rating: 4.8,
@@ -308,4 +302,3 @@ export const categories = [
   "Marketing",
 ];
 
-export const levels = ["All", "Beginner", "Intermediate", "Advanced"];
