@@ -515,11 +515,13 @@ const Register = () => {
         ease: "quad.out",
         delay: 0.1,
       });
-      gsap.to(bodyBG, {
-        duration: 0.45,
-        morphSVG: bodyBGchanged,
-        ease: "quad.out",
-      });
+      if (bodyBG && bodyBGchanged) {
+        gsap.to(bodyBG, {
+          duration: 0.45,
+          morphSVG: bodyBGchanged,
+          ease: "quad.out",
+        });
+      }
       eyesCovered = true;
     };
 
@@ -548,7 +550,9 @@ const Register = () => {
           gsap.set([armL, armR], { visibility: "hidden" });
         },
       });
-      gsap.to(bodyBG, { duration: 0.45, morphSVG: bodyBG, ease: "quad.out" });
+      if (bodyBG) {
+        gsap.to(bodyBG, { duration: 0.45, morphSVG: bodyBG, ease: "quad.out" });
+      }
       eyesCovered = false;
     };
 

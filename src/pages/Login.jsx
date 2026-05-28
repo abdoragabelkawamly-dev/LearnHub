@@ -172,11 +172,13 @@ const Login = () => {
         ease: "quad.out",
         delay: 0.1,
       });
-      gsap.to(bodyBG, {
-        duration: 0.45,
-        morphSVG: bodyBGchanged,
-        ease: "quad.out",
-      });
+      if (bodyBG && bodyBGchanged) {
+        gsap.to(bodyBG, {
+          duration: 0.45,
+          morphSVG: bodyBGchanged,
+          ease: "quad.out",
+        });
+      }
       eyesCovered = true;
     };
 
@@ -204,7 +206,9 @@ const Login = () => {
           gsap.set([armL, armR], { visibility: "hidden" });
         },
       });
-      gsap.to(bodyBG, { duration: 0.45, morphSVG: bodyBG, ease: "quad.out" });
+      if (bodyBG) {
+        gsap.to(bodyBG, { duration: 0.45, morphSVG: bodyBG, ease: "quad.out" });
+      }
       eyesCovered = false;
     };
 
@@ -552,18 +556,20 @@ const Login = () => {
       if (curEmailIndex > 0) {
         if (mouthStatus === "small") {
           mouthStatus = "medium";
-          gsap.to(
-            [
-              document.querySelector(".mouthBG"),
-              document.querySelector(".mouthOutline"),
-              document.querySelector("#mouthMaskPath"),
-            ],
-            {
+          const mouthSmallBG = document.querySelector(".mouthSmallBG");
+          const mouthMediumBG = document.querySelector(".mouthMediumBG");
+          const mouthLargeBG = document.querySelector(".mouthLargeBG");
+          const mouthBG = document.querySelector(".mouthBG");
+          const mouthOutline = document.querySelector(".mouthOutline");
+          const mouthMaskPath = document.querySelector("#mouthMaskPath");
+
+          if (mouthBG && mouthOutline && mouthMaskPath && mouthMediumBG) {
+            gsap.to([mouthBG, mouthOutline, mouthMaskPath], {
               duration: 1,
-              morphSVG: document.querySelector(".mouthMediumBG"),
+              morphSVG: mouthMediumBG,
               ease: "expo.out",
-            },
-          );
+            });
+          }
           gsap.to(document.querySelector(".tooth"), {
             duration: 1,
             x: 0,
@@ -583,18 +589,18 @@ const Login = () => {
         }
         if (value.includes("@")) {
           mouthStatus = "large";
-          gsap.to(
-            [
-              document.querySelector(".mouthBG"),
-              document.querySelector(".mouthOutline"),
-              document.querySelector("#mouthMaskPath"),
-            ],
-            {
+          const mouthLargeBG = document.querySelector(".mouthLargeBG");
+          const mouthBG = document.querySelector(".mouthBG");
+          const mouthOutline = document.querySelector(".mouthOutline");
+          const mouthMaskPath = document.querySelector("#mouthMaskPath");
+
+          if (mouthBG && mouthOutline && mouthMaskPath && mouthLargeBG) {
+            gsap.to([mouthBG, mouthOutline, mouthMaskPath], {
               duration: 1,
-              morphSVG: document.querySelector(".mouthLargeBG"),
+              morphSVG: mouthLargeBG,
               ease: "expo.out",
-            },
-          );
+            });
+          }
           gsap.to(document.querySelector(".tooth"), {
             duration: 1,
             x: 3,
@@ -618,18 +624,20 @@ const Login = () => {
           );
         } else {
           mouthStatus = "medium";
-          gsap.to(
-            [
-              document.querySelector(".mouthBG"),
-              document.querySelector(".mouthOutline"),
-              document.querySelector("#mouthMaskPath"),
-            ],
-            {
+          const mouthSmallBG = document.querySelector(".mouthSmallBG");
+          const mouthMediumBG = document.querySelector(".mouthMediumBG");
+          const mouthLargeBG = document.querySelector(".mouthLargeBG");
+          const mouthBG = document.querySelector(".mouthBG");
+          const mouthOutline = document.querySelector(".mouthOutline");
+          const mouthMaskPath = document.querySelector("#mouthMaskPath");
+
+          if (mouthBG && mouthOutline && mouthMaskPath && mouthMediumBG) {
+            gsap.to([mouthBG, mouthOutline, mouthMaskPath], {
               duration: 1,
-              morphSVG: document.querySelector(".mouthMediumBG"),
+              morphSVG: mouthMediumBG,
               ease: "expo.out",
-            },
-          );
+            });
+          }
           gsap.to(document.querySelector(".tooth"), {
             duration: 1,
             x: 0,
@@ -649,18 +657,18 @@ const Login = () => {
         }
       } else {
         mouthStatus = "small";
-        gsap.to(
-          [
-            document.querySelector(".mouthBG"),
-            document.querySelector(".mouthOutline"),
-            document.querySelector("#mouthMaskPath"),
-          ],
-          {
+        const mouthSmallBG = document.querySelector(".mouthSmallBG");
+        const mouthBG = document.querySelector(".mouthBG");
+        const mouthOutline = document.querySelector(".mouthOutline");
+        const mouthMaskPath = document.querySelector("#mouthMaskPath");
+
+        if (mouthBG && mouthOutline && mouthMaskPath && mouthSmallBG) {
+          gsap.to([mouthBG, mouthOutline, mouthMaskPath], {
             duration: 1,
-            morphSVG: document.querySelector(".mouthSmallBG"),
+            morphSVG: mouthSmallBG,
             ease: "expo.out",
-          },
-        );
+          });
+        }
         gsap.to(document.querySelector(".tooth"), {
           duration: 1,
           x: 0,
@@ -682,18 +690,18 @@ const Login = () => {
     const resetMouth = () => {
       if (!gsap) return;
       mouthStatus = "small";
-      gsap.to(
-        [
-          document.querySelector(".mouthBG"),
-          document.querySelector(".mouthOutline"),
-          document.querySelector("#mouthMaskPath"),
-        ],
-        {
+      const mouthSmallBG = document.querySelector(".mouthSmallBG");
+      const mouthBG = document.querySelector(".mouthBG");
+      const mouthOutline = document.querySelector(".mouthOutline");
+      const mouthMaskPath = document.querySelector("#mouthMaskPath");
+
+      if (mouthBG && mouthOutline && mouthMaskPath && mouthSmallBG) {
+        gsap.to([mouthBG, mouthOutline, mouthMaskPath], {
           duration: 0.8,
-          morphSVG: document.querySelector(".mouthSmallBG"),
+          morphSVG: mouthSmallBG,
           ease: "expo.out",
-        },
-      );
+        });
+      }
       gsap.to(document.querySelector(".tooth"), {
         duration: 0.8,
         x: 0,
@@ -1286,6 +1294,12 @@ const Login = () => {
                             fill="hsl(174 72% 32%)"
                           />
                           <g className="body">
+                            <path
+                              className="bodyBGchanged"
+                              style={{ display: "none" }}
+                              fill="#FFFFFF"
+                              d="M200,122h-35h-14.9V72c0-27.6-22.4-50-50-50s-50,22.4-50,50v50H35.8H0l0,91h200L200,122z"
+                            />
                             <path
                               className="bodyBGnormal"
                               stroke="hsl(174 72% 32%)"
