@@ -1,0 +1,5 @@
+/api/* http://e-learning-platform-3.runasp.net/api/:splat 200
+/Images/* http://e-learning-platform-3.runasp.net/Images/:splat 200
+/Videos/* http://e-learning-platform-3.runasp.net/Videos/:splat 200
+/Files/* http://e-learning-platform-3.runasp.net/Files/:splat 200
+/* /index.html 200
