@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/components/ui/use-toast";
+import AuthBrand from "@/components/AuthBrand";
 import "./Register.css";
 
 const Register = () => {
@@ -739,6 +740,7 @@ const Register = () => {
 
   return (
     <div className="register-page">
+      <AuthBrand />
       <div className="register-bg" aria-hidden="true">
         <svg
           id="bgSVG"

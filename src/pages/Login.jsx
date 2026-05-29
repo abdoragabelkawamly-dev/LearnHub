@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/components/ui/use-toast";
+import AuthBrand from "@/components/AuthBrand";
 import "./Login.css";
 
 const Login = () => {
@@ -902,6 +903,7 @@ const Login = () => {
 
   return (
     <div className="login-page">
+      <AuthBrand />
       <svg
         id="bgSVG"
         xmlns="http://www.w3.org/2000/svg"

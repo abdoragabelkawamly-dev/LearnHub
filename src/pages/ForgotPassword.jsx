@@ -12,7 +12,9 @@ import {
 import { useToast } from "@/components/ui/use-toast";
 import accountService from "@/api/account";
 import YetiIllustration from "@/components/YetiIllustration";
+import AuthBrand from "@/components/AuthBrand";
 import { Loader2, Mail, ArrowLeft, ArrowRight } from "lucide-react";
+import "./Login.css";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
@@ -47,7 +49,8 @@ const ForgotPassword = () => {
   };
 
   return (
-    <div className="page-shell-bg flex min-h-screen items-center justify-center p-4">
+    <div className="login-page">
+      <AuthBrand />
       <div className="grid w-full max-w-5xl items-center gap-8 md:grid-cols-[1.05fr_0.95fr]">
         <YetiIllustration inputSelectors={["#forgotEmail"]} />
         <Card className="w-full animate-scale-in">
@@ -55,8 +58,9 @@ const ForgotPassword = () => {
             <CardTitle className="text-center text-2xl font-bold">
               Reset Password
             </CardTitle>
+            <div className="auth-card-line" />
             <p className="text-center text-sm text-muted-foreground">
-              Enter your email and we will send reset instructions.
+              Enter your email and the Yeti will help send the reset trail.
             </p>
           </CardHeader>
           <CardContent>

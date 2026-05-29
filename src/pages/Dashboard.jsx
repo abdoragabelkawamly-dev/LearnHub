@@ -21,44 +21,61 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { getFullUrl } from "@/lib/urlHelper";
 
-const FALLBACK_MY_COURSES = [
-  {
-    courseId: 1,
-    title: "React from Zero to Hero",
-    categoryName: "Web Development",
-    instructorName: "Mohamed Kamal",
-    progress: 72,
-    gradient: "linear-gradient(135deg, #99e4dd 0%, #14b8a6 100%)",
-  },
-  {
-    courseId: 2,
-    title: "Machine Learning Fundamentals",
-    categoryName: "AI & Data",
-    instructorName: "Dr. Lina Khaled",
-    progress: 38,
-    gradient: "linear-gradient(135deg, #fde68a 0%, #f59e0b 100%)",
-  },
-  {
-    courseId: 3,
-    title: "Python for Absolute Beginners",
-    categoryName: "Programming",
-    instructorName: "Ahmed Ismail",
-    progress: 91,
-    gradient: "linear-gradient(135deg, #ccf2ee 0%, #0f766e 100%)",
-  },
-];
+const pickValue = (source, keys, fallback = undefined) => {
+  for (const key of keys) {
+    const value = source?.[key];
+    if (value !== undefined && value !== null && value !== "") return value;
+  }
 
-const FALLBACK_AVAILABLE_EXAMS = [
-  { examId: 1, title: "React Hooks - Final Quiz", courseTitle: "REACT FROM ZERO TO HERO" },
-  { examId: 2, title: "Linear Regression Project", courseTitle: "ML FUNDAMENTALS" },
-  { examId: 3, title: "CSS Grid Practical", courseTitle: "WEB FUNDAMENTALS", expired: true },
-];
+  return fallback;
+};
 
-const FALLBACK_SUBMITTED_EXAMS = [
-  { examId: 11, examTitle: "JavaScript Fundamentals Exam", score: 92, startedAt: new Date().toISOString() },
-  { examId: 12, examTitle: "Git & GitHub Quiz", score: 88, startedAt: new Date().toISOString() },
-  { examId: 13, examTitle: "TypeScript Basics", score: 95, startedAt: new Date().toISOString() },
-];
+const toArray = (value) => (Array.isArray(value) ? value : []);
+
+const getCourseProgress = (course) =>
+  Number(
+    pickValue(course?.progress, [
+      "progressPercentage",
+      "percentage",
+      "value",
+    ]) ??
+      pickValue(course, ["progressPercentage", "percentage", "progress"], 0),
+  );
+
+const normalizeCourse = (course) => ({
+  ...course,
+  courseId: pickValue(course, ["courseId", "id"]) || course?.course?.courseId,
+  title:
+    pickValue(course, ["title", "courseTitle", "name"]) ||
+    pickValue(course?.course, ["title", "name"], "Untitled Course"),
+  categoryName:
+    pickValue(course, ["categoryName", "category"]) ||
+    pickValue(course?.course, ["categoryName", "category"], "Course"),
+  instructorName:
+    pickValue(course, ["instructorName", "instructor"]) ||
+    pickValue(course?.course, ["instructorName", "instructor"], "Instructor"),
+  image:
+    pickValue(course, ["image", "imgPath", "imagePath", "thumbnail"]) ||
+    pickValue(course?.course, ["image", "imgPath", "imagePath", "thumbnail"]),
+  progress: getCourseProgress(course),
+});
+
+const getExamId = (exam) =>
+  pickValue(exam, ["examId", "id"]) || pickValue(exam?.exam, ["examId", "id"]);
+
+const getExamTitle = (exam) =>
+  pickValue(exam, ["title", "examTitle", "name"]) ||
+  pickValue(exam?.exam, ["title", "examTitle", "name"], "Assessment");
+
+const getCourseTitle = (exam) =>
+  pickValue(exam, ["courseTitle", "courseName"]) ||
+  pickValue(exam?.course, ["title", "courseTitle", "name"], "Course");
+
+const getScore = (result) =>
+  Number(
+    pickValue(result, ["score", "percentage"]) ||
+      pickValue(result?.examResult, ["score", "percentage"], 0),
+  );
 
 const pageMotion = {
   hidden: { opacity: 0, y: 18 },
@@ -134,22 +151,36 @@ const Dashboard = () => {
     enabled: !!user,
   });
 
-  const hasDashboardData = Boolean(dashboardData);
-  const stats = dashboardData?.stats || { totalCourses: 12, totalExams: 48 };
-  const rawMyCourses = dashboardData?.myCourses || [];
-  const myCoursesFromApi = rawMyCourses.map((c) => ({
-    ...c,
-    progress: c.progress?.progressPercentage || 0,
-  }));
-  const myCourses = hasDashboardData && myCoursesFromApi.length > 0 ? myCoursesFromApi : FALLBACK_MY_COURSES;
-  const availableExams =
-    hasDashboardData && (dashboardData?.availableExams || []).length > 0
-      ? dashboardData.availableExams
-      : FALLBACK_AVAILABLE_EXAMS;
-  const submittedExams =
-    hasDashboardData && (dashboardData?.submittedExams || []).length > 0
-      ? dashboardData.submittedExams
-      : FALLBACK_SUBMITTED_EXAMS;
+  const rawMyCourses = toArray(dashboardData?.myCourses);
+  const myCourses = rawMyCourses.map(normalizeCourse);
+  const availableExams = toArray(dashboardData?.availableExams);
+  const submittedExams = toArray(dashboardData?.submittedExams);
+  const stats = {
+    totalCourses:
+      Number(
+        pickValue(dashboardData?.stats, [
+          "totalCourses",
+          "activeCourses",
+          "coursesCount",
+        ]),
+      ) || myCourses.length,
+    totalExams:
+      Number(
+        pickValue(dashboardData?.stats, [
+          "totalExams",
+          "availableExams",
+          "examsCount",
+        ]),
+      ) || availableExams.length,
+    completedExams:
+      Number(
+        pickValue(dashboardData?.stats, [
+          "completedExams",
+          "submittedExams",
+          "resultsCount",
+        ]),
+      ) || submittedExams.length,
+  };
 
   const weeklyCompleted = Math.min(
     5,
@@ -176,7 +207,11 @@ const Dashboard = () => {
             </span>
           </h1>
           <p className="page__subtitle">
-            You've got <strong style={{ color: "var(--fg-1)" }}>3 lessons</strong> to finish this week. Pick up where you left off.
+            You've got{" "}
+            <strong style={{ color: "var(--fg-1)" }}>
+              {availableExams.length} assessment{availableExams.length === 1 ? "" : "s"}
+            </strong>{" "}
+            available. Pick up where you left off.
           </p>
         </div>
         <div className="row gap-2">
@@ -207,7 +242,7 @@ const Dashboard = () => {
             </div>
           </div>
           <div className="stat__val">{stats.totalExams}</div>
-          <div className="stat__label">Lessons this month</div>
+          <div className="stat__label">Available exams</div>
         </div>
 
         <div className="stat">
@@ -216,7 +251,7 @@ const Dashboard = () => {
               <Zap size={20} />
             </div>
           </div>
-          <div className="stat__val">21</div>
+          <div className="stat__val">{weeklyCompleted}</div>
           <div className="stat__label">Day streak</div>
         </div>
 
@@ -226,7 +261,7 @@ const Dashboard = () => {
               <Trophy size={20} />
             </div>
           </div>
-          <div className="stat__val">4</div>
+          <div className="stat__val">{stats.completedExams}</div>
           <div className="stat__label">Exams completed</div>
         </div>
       </div>
@@ -271,7 +306,7 @@ const Dashboard = () => {
               <div className="col gap-3">
                 {myCourses.slice(0, 3).map((course) => (
                   <Link
-                    key={course.courseId}
+                    key={course.courseId || course.title}
                     to={`/courses/${course.courseId}`}
                     className="crow"
                   >
@@ -403,14 +438,14 @@ const Dashboard = () => {
               {submittedExams.length > 0 ? (
                 submittedExams.slice(0, 4).map((result) => (
                   <div
-                    key={`${result.examTitle}-${result.startedAt}`}
+                    key={`${getExamTitle(result)}-${result.startedAt}`}
                     className="side-card__row"
                   >
                     <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">
-                      {(result.examTitle || "A").slice(0, 2).toUpperCase()}
+                      {getExamTitle(result).slice(0, 2).toUpperCase()}
                     </div>
                     <div className="flex-1 text-sm leading-5 text-foreground">
-                      Completed <strong>{result.examTitle || "assessment"}</strong>
+                      Completed <strong>{getExamTitle(result)}</strong>
                     </div>
                     <span className="shrink-0 text-[11px] font-medium text-muted-foreground">
                       {result.startedAt
@@ -447,7 +482,7 @@ const Dashboard = () => {
                   exam.expired || (exam.endDate && new Date() > new Date(exam.endDate));
                 return (
                   <div
-                    key={exam.examId}
+                    key={getExamId(exam) || getExamTitle(exam)}
                     className="side-card__row"
                     style={{ alignItems: "flex-start" }}
                   >
@@ -460,9 +495,9 @@ const Dashboard = () => {
                           marginBottom: 4,
                         }}
                       >
-                        {exam.title}
+                        {getExamTitle(exam)}
                       </div>
-                      <div className="overline">{exam.courseTitle}</div>
+                      <div className="overline">{getCourseTitle(exam)}</div>
                     </div>
                     {isSubmitted || isExpired ? (
                       <span
@@ -490,7 +525,7 @@ const Dashboard = () => {
                         className="h-8 rounded-full"
                         style={{ flexShrink: 0 }}
                       >
-                        <Link to={`/dashboard/exam/${exam.examId}`}>Start</Link>
+                        <Link to={`/dashboard/exam/${getExamId(exam)}`}>Start</Link>
                       </Button>
                     )}
                   </div>
@@ -520,26 +555,23 @@ const Dashboard = () => {
               submittedExams.map((result) => {
                 const recentResultId = result.examResultId || result.resultId;
                 const examId =
-                  result.examId ||
-                  result.examID ||
-                  result.exam?.examId ||
-                  result.exam?.id ||
-                  result.id;
+                  getExamId(result) ||
+                  result.examID;
                 const targetId = examId || recentResultId;
                 const lookup = examId ? "exam" : "result";
-                const score = result.score ?? result.examResult?.score ?? 0;
+                const score = getScore(result);
 
                 return (
                   <div
                     key={
-                      targetId || `${result.examTitle}-${result.startedAt}`
+                      targetId || `${getExamTitle(result)}-${result.startedAt}`
                     }
                     className="side-card__row"
                   >
                     <div
                       style={{ flex: 1, fontSize: 13, fontWeight: 600, minWidth: 0 }}
                     >
-                      <div style={{ marginBottom: 4 }}>{result.examTitle}</div>
+                      <div style={{ marginBottom: 4 }}>{getExamTitle(result)}</div>
                       <Link
                         to={
                           targetId

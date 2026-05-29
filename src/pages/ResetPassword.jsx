@@ -1,4 +1,4 @@
-import { lazy, Suspense, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useSearchParams, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -12,13 +12,9 @@ import {
 import { useToast } from "@/components/ui/use-toast";
 import accountService from "@/api/account";
 import { Loader2, Lock, ArrowLeft } from "lucide-react";
-
-const IllustrationFrame = lazy(() =>
-  import("@/components/illustrations/IllustrationFrame"),
-);
-const SecurePaymentIllustration = lazy(() =>
-  import("@/components/illustrations/SecurePaymentIllustration"),
-);
+import YetiIllustration from "@/components/YetiIllustration";
+import AuthBrand from "@/components/AuthBrand";
+import "./Login.css";
 
 const ResetPassword = () => {
   const [newPassword, setNewPassword] = useState("");
@@ -115,18 +111,16 @@ const ResetPassword = () => {
   };
 
   return (
-    <div className="page-shell-bg flex min-h-screen items-center justify-center p-4">
+    <div className="login-page">
+      <AuthBrand />
       <div className="grid w-full max-w-5xl items-center gap-8 md:grid-cols-[1.05fr_0.95fr]">
-        <Suspense fallback={null}>
-          <IllustrationFrame className="animate-fade-in">
-            <SecurePaymentIllustration />
-          </IllustrationFrame>
-        </Suspense>
+        <YetiIllustration inputSelectors={["#newPassword", "#confirmNewPassword"]} />
       <Card className="w-full animate-scale-in">
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl font-bold text-center">
             Set New Password
           </CardTitle>
+          <div className="auth-card-line" />
           <p className="text-muted-foreground text-center text-sm">
             {isVerifying
               ? "Verifying secure token..."
@@ -146,6 +140,7 @@ const ResetPassword = () => {
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
                 <Input
+                  id="newPassword"
                   type="password"
                   placeholder="New Password"
                   value={newPassword}
@@ -156,6 +151,7 @@ const ResetPassword = () => {
               </div>
               <div className="space-y-2">
                 <Input
+                  id="confirmNewPassword"
                   type="password"
                   placeholder="Confirm New Password"
                   value={confirmPassword}

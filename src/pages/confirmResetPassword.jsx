@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Loader2, ShieldCheck } from "lucide-react";
 import accountService from "@/api/account";
 import YetiIllustration from "@/components/YetiIllustration";
+import AuthBrand from "@/components/AuthBrand";
 import { useToast } from "@/components/ui/use-toast";
 
 const ConfirmReset = () => {
@@ -64,7 +65,8 @@ const ConfirmReset = () => {
   }, [handleVerify, searchParams]);
 
   return (
-    <div className="page-shell-bg flex min-h-screen items-center justify-center p-4">
+    <div className="login-page">
+      <AuthBrand />
       <div className="grid w-full max-w-5xl items-center gap-8 md:grid-cols-[1.05fr_0.95fr]">
         <YetiIllustration inputSelectors={["#resetUserId", "#resetToken"]} />
         <Card className="w-full animate-scale-in">
@@ -72,6 +74,7 @@ const ConfirmReset = () => {
             <CardTitle className="text-center text-2xl font-bold">
               Verify Reset Request
             </CardTitle>
+            <div className="auth-card-line" />
             <p className="text-center text-sm text-muted-foreground">
               Enter the User ID and token from your email.
             </p>
