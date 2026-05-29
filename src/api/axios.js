@@ -1,13 +1,46 @@
 import axios from "axios";
 
+const API_ORIGIN = "http://e-learning-platform-3.runasp.net";
+
+const getApiBasePath = () => {
+  const configuredBasePath = import.meta.env.VITE_API_BASE_PATH || "";
+
+  if (
+    typeof window !== "undefined" &&
+    window.location.protocol === "https:" &&
+    configuredBasePath.startsWith("http://")
+  ) {
+    return "";
+  }
+
+  if (
+    typeof window !== "undefined" &&
+    ["localhost", "127.0.0.1", "::1"].includes(window.location.hostname) &&
+    !configuredBasePath
+  ) {
+    return API_ORIGIN;
+  }
+
+  return configuredBasePath;
+};
+
+const getStoredToken = () =>
+  localStorage.getItem("token") || sessionStorage.getItem("token");
+
+const getStoredRefreshToken = () =>
+  localStorage.getItem("refreshToken") || sessionStorage.getItem("refreshToken");
+
+const getTokenStorage = () =>
+  localStorage.getItem("refreshToken") ? localStorage : sessionStorage;
+
 const api = axios.create({
   // Keep requests relative so Vercel/Vite can proxy HTTPS frontend calls to the HTTP API.
-  baseURL: import.meta.env.VITE_API_BASE_PATH || "",
+  baseURL: getApiBasePath(),
 });
 
 
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem("token");
+  const token = getStoredToken();
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
@@ -21,7 +54,7 @@ api.interceptors.response.use(
 
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
-      const refreshToken = localStorage.getItem("refreshToken");
+      const refreshToken = getStoredRefreshToken();
 
       if (refreshToken) {
         try {
@@ -38,9 +71,10 @@ api.interceptors.response.use(
           );
 
           const { accessToken, refreshToken: newRefreshToken } = response.data;
+          const storage = getTokenStorage();
 
-          localStorage.setItem("token", accessToken);
-          localStorage.setItem("refreshToken", newRefreshToken);
+          storage.setItem("token", accessToken);
+          storage.setItem("refreshToken", newRefreshToken);
 
           originalRequest.headers.Authorization = `Bearer ${accessToken}`;
           return api(originalRequest);
@@ -48,6 +82,9 @@ api.interceptors.response.use(
           localStorage.removeItem("token");
           localStorage.removeItem("refreshToken");
           localStorage.removeItem("user");
+          sessionStorage.removeItem("token");
+          sessionStorage.removeItem("refreshToken");
+          sessionStorage.removeItem("user");
           window.location.href = "/login";
           return Promise.reject(refreshError);
         }
