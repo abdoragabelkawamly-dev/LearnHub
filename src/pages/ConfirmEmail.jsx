@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { Link, useLocation, useSearchParams } from "react-router-dom";
 import { CheckCircle2, Loader2, MailCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,6 +10,26 @@ import AuthBrand from "@/components/AuthBrand";
 import YetiIllustration from "@/components/YetiIllustration";
 import "./Login.css";
 
+const getQueryValue = (searchParams, names) => {
+  for (const name of names) {
+    const value = searchParams.get(name);
+    if (value) return value;
+  }
+
+  const entries = Array.from(searchParams.entries());
+  const match = entries.find(([key]) =>
+    names.some((name) => key.toLowerCase() === name.toLowerCase()),
+  );
+
+  return match?.[1] || "";
+};
+
+const redirectToLanding = () => {
+  window.setTimeout(() => {
+    window.location.replace("/");
+  }, 1600);
+};
+
 const ConfirmEmail = () => {
   const location = useLocation();
   const [searchParams] = useSearchParams();
@@ -19,12 +39,18 @@ const ConfirmEmail = () => {
   const [isConfirmed, setIsConfirmed] = useState(false);
   const hasHandledLink = useRef(false);
 
-  const navigate = useNavigate();
   const { toast } = useToast();
 
   useEffect(() => {
-    const userId = searchParams.get("userId");
-    const token = searchParams.get("token");
+    const userId = getQueryValue(searchParams, ["userId", "UserId", "uid"]);
+    const token = getQueryValue(searchParams, ["token", "Token", "code"]);
+
+    if (!userId && !token && !location.state?.email && !hasHandledLink.current) {
+      hasHandledLink.current = true;
+      setIsConfirmed(true);
+      redirectToLanding();
+      return;
+    }
 
     if (!userId || !token || hasHandledLink.current) return;
     hasHandledLink.current = true;
@@ -41,7 +67,7 @@ const ConfirmEmail = () => {
           title: "Email confirmed",
           description: "You're all set. Taking you back to LearnHub.",
         });
-        window.setTimeout(() => navigate("/", { replace: true }), 1800);
+        redirectToLanding();
       } catch (error) {
         toast({
           variant: "destructive",
@@ -57,7 +83,7 @@ const ConfirmEmail = () => {
     };
 
     confirmAndContinue();
-  }, [navigate, searchParams, toast]);
+  }, [location.state?.email, searchParams, toast]);
 
   const handleResend = async () => {
     if (!email) {

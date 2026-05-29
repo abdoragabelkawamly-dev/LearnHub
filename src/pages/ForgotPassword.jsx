@@ -1,19 +1,13 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { ArrowLeft, ArrowRight, Loader2, Mail, MailQuestion } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardFooter,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/components/ui/use-toast";
 import accountService from "@/api/account";
 import YetiIllustration from "@/components/YetiIllustration";
 import AuthBrand from "@/components/AuthBrand";
-import { Loader2, Mail, ArrowLeft, ArrowRight } from "lucide-react";
 import "./Login.css";
 
 const ForgotPassword = () => {
@@ -51,53 +45,68 @@ const ForgotPassword = () => {
   return (
     <div className="login-page">
       <AuthBrand />
-      <div className="grid w-full max-w-5xl items-center gap-8 md:grid-cols-[1.05fr_0.95fr]">
-        <YetiIllustration inputSelectors={["#forgotEmail"]} />
-        <Card className="w-full animate-scale-in">
-          <CardHeader className="space-y-1">
-            <CardTitle className="text-center text-2xl font-bold">
-              Reset Password
-            </CardTitle>
-            <div className="auth-card-line" />
-            <p className="text-center text-sm text-muted-foreground">
-              Enter your email and the Yeti will help send the reset trail.
-            </p>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <Input
-                id="forgotEmail"
-                type="email"
-                placeholder="Email Address"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                disabled={isLoading}
-              />
-              <Button type="submit" className="w-full" disabled={isLoading}>
-                {isLoading ? (
-                  <Loader2 className="w-4 h-4 animate-spin mr-2" />
-                ) : (
-                  <Mail className="w-4 h-4 mr-2" />
-                )}
-                Send Reset Link
-              </Button>
-            </form>
-          </CardContent>
-          <CardFooter className="flex flex-col gap-2">
-            <Button variant="outline" className="w-full" asChild>
-              <Link to="/confirm-reset">
-                Already have your Token? Enter it here{" "}
-                <ArrowRight className="w-4 h-4 ml-2" />
-              </Link>
-            </Button>
-            <Button variant="ghost" className="w-full" asChild>
-              <Link to="/login">
-                <ArrowLeft className="w-4 h-4 mr-2" /> Back to Login
-              </Link>
-            </Button>
-          </CardFooter>
-        </Card>
+      <div className="login-page__content">
+        <article className="login-page__card">
+          <div className="login-page__panel">
+            <div className="login-page__panel-inner">
+              <div className="login-page__panel-body">
+                <YetiIllustration inputSelectors={["#forgotEmail"]} />
+
+                <Card className="w-full border-0 bg-transparent shadow-none">
+                  <CardHeader className="space-y-3 pb-4 text-center">
+                    <div className="mx-auto flex h-11 w-11 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+                      <MailQuestion className="h-5 w-5" />
+                    </div>
+                    <div>
+                      <CardTitle className="text-2xl font-bold">
+                        Reset password
+                      </CardTitle>
+                      <div className="auth-card-line" />
+                      <p className="text-sm leading-6 text-muted-foreground">
+                        Enter your email and the Yeti will send the reset trail to your inbox.
+                      </p>
+                    </div>
+                  </CardHeader>
+
+                  <CardContent className="space-y-4">
+                    <form onSubmit={handleSubmit} className="space-y-4">
+                      <Input
+                        id="forgotEmail"
+                        type="email"
+                        placeholder="Email address"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
+                        disabled={isLoading}
+                      />
+                      <Button type="submit" className="w-full" disabled={isLoading}>
+                        {isLoading ? (
+                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        ) : (
+                          <Mail className="mr-2 h-4 w-4" />
+                        )}
+                        Send reset link
+                      </Button>
+                    </form>
+
+                    <Button variant="outline" className="w-full" asChild>
+                      <Link to="/confirm-reset">
+                        Already have your token?
+                        <ArrowRight className="ml-2 h-4 w-4" />
+                      </Link>
+                    </Button>
+                    <Button variant="ghost" className="w-full" asChild>
+                      <Link to="/login">
+                        <ArrowLeft className="mr-2 h-4 w-4" />
+                        Back to login
+                      </Link>
+                    </Button>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+          </div>
+        </article>
       </div>
     </div>
   );

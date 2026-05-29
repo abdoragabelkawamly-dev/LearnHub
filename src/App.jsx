@@ -114,6 +114,8 @@ const App = () => (
             </Route>
 
             <Route path="/confirm-email" element={<ConfirmEmail />} />
+            <Route path="/ConfirmEmail" element={<ConfirmEmail />} />
+            <Route path="/confirmemail" element={<ConfirmEmail />} />
 
             <Route element={<PublicRoute />}>
               <Route path="/login" element={<Login />} />
